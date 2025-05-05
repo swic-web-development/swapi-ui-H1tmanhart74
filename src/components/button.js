@@ -1,5 +1,5 @@
 export function displayData(data) {
-  const planetInfo = document.getElementById('planet-info')
+  const planetInfo = document.getElementById('SWAPI-info')
 
   // Clear previous content
   planetInfo.innerHTML = ''
