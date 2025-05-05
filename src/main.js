@@ -1,39 +1,35 @@
 import './styles.css'
+import { displayData } from './components/button.js'
 
-fetch('https://www.swapi.tech/api/planets/1')
-  .then((res) => res.json())
-  .then((data) => {
-    const planetInfo = document.getElementById('planet-info')
-    const { properties } = data.result
+async function fetchAllData(endpoint) {
+  const planetInfo = document.getElementById('planet-info')
+  planetInfo.textContent = 'Loading...'
+
+  let allData = []
+  let nextUrl = `https://www.swapi.tech/api/${endpoint}`
+
+  try {
+    while (nextUrl) {
+      const response = await fetch(nextUrl)
+      const data = await response.json()
+
+      // Collect results
+      allData = allData.concat(data.results)
+
+      // Check if there's a next page
+      nextUrl = data.next
+    }
 
     // Clear loading text
     planetInfo.textContent = ''
 
-    // Create a styled list of planet properties
-    const infoList = document.createElement('ul')
-    infoList.className = 'space-y-2'
-
-    for (const [key, value] of Object.entries(properties)) {
-      const listItem = document.createElement('li')
-      listItem.className = 'flex justify-between bg-gray-700 p-2 rounded-md'
-
-      const keySpan = document.createElement('span')
-      keySpan.className = 'font-semibold text-gray-300'
-      keySpan.textContent = key.replace('_', ' ').toUpperCase()
-
-      const valueSpan = document.createElement('span')
-      valueSpan.className = 'text-gray-100'
-      valueSpan.textContent = value
-
-      listItem.appendChild(keySpan)
-      listItem.appendChild(valueSpan)
-      infoList.appendChild(listItem)
-    }
-
-    planetInfo.appendChild(infoList)
-  })
-  .catch((error) => {
-    const planetInfo = document.getElementById('planet-info')
+    // Display the fetched data
+    displayData(allData)
+  } catch (error) {
     planetInfo.textContent = 'Error fetching data.'
     console.error('Error fetching data:', error)
-  })
+  }
+}
+
+// Fetch all planets as an example
+fetchAllData('planets')
