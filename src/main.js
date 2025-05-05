@@ -34,15 +34,15 @@ async function fetchAllData(endpoint) {
     // Display the fetched data
     displayData(allData, handleItemClick) // Pass the click handler to displayData
   } catch (error) {
-    planetInfo.textContent = 'Error fetching data.'
-    console.error('Error fetching data:', error)
+    planetInfo.textContent = 'Error fetching information.'
+    console.error('Error fetching information.', error)
   }
 }
 
 // Handle item click to export data to the textarea
 async function handleItemClick(item) {
   const textarea = document.getElementById('export-textarea')
-  textarea.value = 'Loading detailed information...' // Show loading message
+  textarea.value = 'Loading information...' // Show loading message
 
   try {
     // Check if the item has a URL for detailed data
@@ -51,10 +51,10 @@ async function handleItemClick(item) {
       const detailedData = await response.json()
 
       // Extract and format relevant fields
-      const { properties } = detailedData.result
+      const { properties, description } = detailedData.result
       const formattedData = `
 Name: ${properties.name}
-Description: ${properties.description}
+Description: ${description}
 Climate: ${properties.climate}
 Terrain: ${properties.terrain}
 Surface Water: ${properties.surface_water}
@@ -72,8 +72,8 @@ Rotation Period: ${properties.rotation_period}
       textarea.value = JSON.stringify(item, null, 2)
     }
   } catch (error) {
-    textarea.value = 'Error fetching detailed information.'
-    console.error('Error fetching detailed information:', error)
+    textarea.value = 'Error fetching information.'
+    console.error('Error fetching information.', error)
   }
 }
 
@@ -84,7 +84,7 @@ const header = document.querySelector('h1') // Select the header element
 const searchLabel = createLabel('Search for a planet:', 'search-input')
 
 // Create the search input field
-const searchInput = createInput('Search SWAPI...', (value) => {
+const searchInput = createInput('Search planets...', (value) => {
   // Filter the data based on the search input
   const filteredData = allData.filter((item) =>
     (item.name || '').toLowerCase().includes(value.toLowerCase()),
@@ -94,7 +94,7 @@ const searchInput = createInput('Search SWAPI...', (value) => {
 searchInput.id = 'search-input' // Set the ID to match the label's htmlFor
 
 // Create the textarea for exporting data
-const exportTextarea = createTextarea('Click on an item to export its data...')
+const exportTextarea = createTextarea("Select a planet to show it's information...")
 exportTextarea.id = 'export-textarea' // Set an ID for the textarea
 
 // Insert the label, input, and textarea below the header

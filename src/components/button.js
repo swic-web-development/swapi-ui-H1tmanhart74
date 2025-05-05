@@ -10,7 +10,7 @@ export function displayData(data, onItemClick) {
 
   data.forEach((item) => {
     const listItem = document.createElement('li')
-    listItem.className = 'p-4 bg-gray-700 rounded-md shadow-md cursor-pointer'
+    listItem.className = 'p-4 bg-gray-800 rounded-md shadow-md cursor-pointer'
 
     const link = document.createElement('a')
     link.className = 'text-xl font-bold text-blue-400 hover:underline'
